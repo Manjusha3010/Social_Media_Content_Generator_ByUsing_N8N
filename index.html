@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Social Media Content Generator | n8n Workflow</title>
+  <meta name="description" content="Automated LinkedIn post generator using n8n, AI agents, Google Sheets, and Upload Post." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --surface: #121826;
+      --border: #1f2937;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #6366f1;
+      --accent-2: #22d3ee;
+      --green: #34d399;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Inter, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .hero {
+      padding: 4rem 1.5rem 3rem;
+      text-align: center;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.18), transparent 40%),
+        radial-gradient(circle at 80% 0%, rgba(34, 211, 238, 0.12), transparent 35%),
+        var(--bg);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.35rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--accent-2);
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .subtitle {
+      max-width: 720px;
+      margin: 0 auto 2rem;
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    .actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      color: white;
+    }
+
+    .btn-secondary {
+      border: 1px solid var(--border);
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    section {
+      margin-bottom: 3rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem;
+    }
+
+    .card strong { display: block; margin-bottom: 0.35rem; }
+
+    .steps {
+      counter-reset: step;
+      list-style: none;
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .steps li {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1rem 1rem 3rem;
+      position: relative;
+    }
+
+    .steps li::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+    }
+
+    .shots {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    figure {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    figure img {
+      width: 100%;
+      display: block;
+    }
+
+    figcaption {
+      padding: 0.85rem 1rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .note {
+      background: rgba(52, 211, 153, 0.08);
+      border: 1px solid rgba(52, 211, 153, 0.25);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      color: #a7f3d0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    code {
+      background: #1e293b;
+      padding: 0.15rem 0.4rem;
+      border-radius: 6px;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <span class="badge">n8n · AI · LinkedIn Automation</span>
+    <h1>Social Media Content Generator</h1>
+    <p class="subtitle">
+      An automated workflow that uses AI to create LinkedIn posts about Software Testing in 2026,
+      saves them to Google Sheets, and publishes to LinkedIn.
+    </p>
+    <div class="actions">
+      <a class="btn btn-primary" href="LinkedPostGeneration.json" download>Download Workflow JSON</a>
+      <a class="btn btn-secondary" href="https://github.com/Manjusha3010/Social_Media_Content_Generator_ByUsing_N8N" target="_blank" rel="noopener">View on GitHub</a>
+      <a class="btn btn-secondary" href="ContentGenerator.xlsx" download>Sample Google Sheet</a>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2>What it does</h2>
+      <div class="grid">
+        <div class="card"><strong>1. AI picks a topic</strong>Playwright, AI testing, QA trends, and more.</div>
+        <div class="card"><strong>2. AI writes the post</strong>Hook, body text, and image prompt.</div>
+        <div class="card"><strong>3. Saves to Google Sheet</strong>Title, content, date, and status.</div>
+        <div class="card"><strong>4. Posts to LinkedIn</strong>Via Upload Post integration.</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Quick setup</h2>
+      <ol class="steps">
+        <li>Open n8n → Import → choose <code>LinkedPostGeneration.json</code></li>
+        <li>Add API keys for OpenRouter, Groq, Gemini, Google Sheets, and Upload Post</li>
+        <li>Create a Google Sheet with columns: <code>title | rationale | hook | status | Date | content | image_prompt</code></li>
+        <li>Connect the sheet in the Google Sheets node</li>
+        <li>Activate the workflow → open Chat → send a message to run</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Important note</h2>
+      <p class="note">
+        This site hosts the project documentation and workflow files. The automation itself runs in
+        <strong>n8n</strong> (cloud or self-hosted), not on Vercel. Import the JSON file into your n8n account to use it.
+      </p>
+    </section>
+
+    <section>
+      <h2>Screenshots</h2>
+      <div class="shots">
+        <figure>
+          <img src="Screenshots/image%20(1).png" alt="n8n workflow canvas" />
+          <figcaption>n8n workflow — topic creation, content writing, Google Sheets, LinkedIn publish</figcaption>
+        </figure>
+        <figure>
+          <img src="Screenshots/image%20(2).png" alt="Google Sheets output" />
+          <figcaption>Generated content saved in the ContentGenerator Google Sheet</figcaption>
+        </figure>
+        <figure>
+          <img src="Screenshots/image%20(3).png" alt="LinkedIn post example" />
+          <figcaption>Example published LinkedIn post</figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Built with n8n · Software Testing in 2026 · QA Automation
+  </footer>
+</body>
+</html>
