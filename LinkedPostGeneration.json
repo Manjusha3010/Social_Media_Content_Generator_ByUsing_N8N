@@ -1,0 +1,474 @@
+{
+  "name": "LinkedPostGeneration",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -288,
+        32
+      ],
+      "id": "72881979-32c3-40ae-a887-b7dfcb7b0b42",
+      "name": "When chat message received",
+      "webhookId": "77a199a9-387e-419a-b4be-d7c55eb7713d"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -128,
+        240
+      ],
+      "id": "374490ba-7205-4373-a11a-b9a255969772",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 2
+            },
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -592,
+        192
+      ],
+      "id": "e0390409-68ed-41bb-8382-6e59d3709de5",
+      "name": "Schedule Trigger",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        224
+      ],
+      "id": "83c84408-53ba-4c3b-8367-24376329d1c7",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "YG2hoJdsCcP6H0Ik",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"title\" : \"example\",\n  \"rationale\"  : \"example\",\n  \"hook\" : \"example\"\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -32,
+        240
+      ],
+      "id": "99d4cc5d-5b60-418c-af58-ce1ca143eac0",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        368
+      ],
+      "id": "3a25be1e-18a6-4d6c-a6c2-f239787c2829",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "cRPK9SESdra4bZ6s",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1UuxzV_Qti_dKXuQQv5tZGTkOP6Dx_2EwO84rTGoZ-j0",
+          "mode": "list",
+          "cachedResultName": "ContentGenerator",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1UuxzV_Qti_dKXuQQv5tZGTkOP6Dx_2EwO84rTGoZ-j0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1UuxzV_Qti_dKXuQQv5tZGTkOP6Dx_2EwO84rTGoZ-j0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "title": "={{ $('Step:1 Topic Creator AI Agent').item.json.output.title }}",
+            "rationale": "={{ $('Step:1 Topic Creator AI Agent').item.json.output.rationale }}",
+            "hook": "={{ $('Step:1 Topic Creator AI Agent').item.json.output.hook }}",
+            "status": "Draft",
+            "Date": "={{ $today }}",
+            "content": "={{ $json.output.content }}",
+            "image_prompt": "={{ $json.output.image_prompt }}"
+          },
+          "matchingColumns": [
+            "title"
+          ],
+          "schema": [
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "rationale",
+              "displayName": "rationale",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "hook",
+              "displayName": "hook",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "content",
+              "displayName": "content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "image_prompt",
+              "displayName": "image_prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        32
+      ],
+      "id": "a2031aea-afb2-4c93-990d-3cfdb672648d",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Vg78aqYoWF0Hfj8Q",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        288,
+        224
+      ],
+      "id": "fcf29963-e0bf-45a6-82f6-7b26579fa39c",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "vegOYRjLSh7lKm3L",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"content\" : \"Content of the generated LinkedIn post.\",\n  \"image_prompt\" : \" Image that the AI should generate.\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        448,
+        240
+      ],
+      "id": "8f3b4450-535f-4a48-b3dc-d09e34888417",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a high-performing LinkedIn content strategist and B2B copywriter.\n\nInput:\n\n- Title:{{ $json.output.title }}\n- Rationale: {{ $json.output.rationale }}\n- Suggested Hook: {{ $json.output.hook }}\nYour task:\nCreate a high-engagement LinkedIn post based on the inputs.\n\nRequirements:\n\n1. Start with the provided hook (optimize it if necessary for stronger scroll-stopping impact).\n2. Expand the core idea clearly and persuasively.\n3. Maintain a strong narrative flow (problem → shift → insight → implication).\n4. Keep it practical and insight-driven (no fluff or generic motivation).\n5. Use short paragraphs for readability.\n6. Include 3–5 sharp bullet points if helpful.\n7. End with:\n    - A strong takeaway or forward-looking statement\n    - A conversation-driving question\n\nTone:\n\n- Authoritative but conversational\n- Insightful and slightly bold\n- Written for professionals in tech/QA/engineering leadership\nLength:\n\n- 150–300 words\nAfter the post, also provide:\n\n\nGenerate a Image_Prpmpt also like below example : \n\nExample of Image_Prpmpt : A vibrant, modern cartoon-style tech illustration with a polished YouTube-thumbnail aesthetic. The scene features a clean UI dashboard inside a glowing browser window, with rounded corners and soft shadows. Use a neon gradient color palette (greens, purples, oranges) with subtle grid background.\n\nInclude bold, glossy UI cards and metrics panels with high contrast text, soft glow effects, and smooth gradients. Add playful floating icons around the scene to reinforce a tech/AI theme.\n\nOn one side, include a friendly cartoon avatar character with a big smile, expressive eyes, and simplified features, pointing toward the interface. Character should be semi-3D, vector-like, with soft shading and thick outlines.\n\nLighting should be soft but vibrant with glow accents and subtle highlights. Overall composition should feel dynamic, clean, and slightly futuristic.\n\nStyle inspired by modern SaaS marketing visuals, animated explainer thumbnails, and polished vector illustrations. Highly detailed, sharp, colorful, and engaging.\n",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        272,
+        32
+      ],
+      "id": "1efc256b-ac9c-44d5-a549-aeeac517d885",
+      "name": "Step:2 Take the topic and generate the content"
+    },
+    {
+      "parameters": {
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a Senior QA architect and industry analyst writing in 2026.\n\nYour task is to generate ONLY ONE topic about:\n\n\"Software Testing in 2026\"\n\nConstraints:\n\n- Choose the single most impactful and future-defining shift.\n- Avoid generic themes unless you provide a deeply unique angle.\n- The topic must be bold, specific, and insight-driven.\n- It should reflect a real structural change in the industry (not surface-level trends).\n- The topic must be strong enough to anchor a keynote talk.\n- \n-  You can talk about Playwright AI agents, Playwright MCP, Playwright CLI, AI agents, n8n, LangFlow, RAG, MCP, Crew.ai, LLM evaluation  \nOutput format:\n\n1. Title (clear, bold, thought-provoking)\n2. One-sentence thesis (strong and definitive)\n3. Why this topic matters in 2026 (5–7 bullet points with reasoning)\nDo NOT generate multiple topics.\nDo NOT provide alternatives.\nCommit to one topic and defend it.\n\nDon't`To make a complex topic, keep it very simple. Example: Playwright CLI` \n\n\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -80,
+        32
+      ],
+      "id": "97d6dd81-be5f-44e5-85b9-a3cc4d48fe3d",
+      "name": "Step:1 Topic Creator AI Agent"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "model": "gpt-image-1",
+        "prompt": "={{ $json.output.image_prompt }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        1200,
+        288
+      ],
+      "id": "eee0b250-936f-49b0-88eb-40aa21a78b2f",
+      "name": "Generate an image",
+      "credentials": {
+        "openAiApi": {
+          "id": "8zC2bGhZ0cTJHdCm",
+          "name": "ManojAPI"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "uploadText",
+        "user": "Manju",
+        "platform": [
+          "linkedin"
+        ],
+        "title": "={{ $json.content }}"
+      },
+      "type": "n8n-nodes-upload-post.uploadPost",
+      "typeVersion": 1,
+      "position": [
+        880,
+        32
+      ],
+      "id": "80c9992f-7b3a-4e9f-ad96-0503c6e00ca1",
+      "name": "Upload a text post",
+      "credentials": {
+        "uploadPostApi": {
+          "id": "G0ISdDKmmdxfN32k",
+          "name": "Manju"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Step:1 Topic Creator AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Step:1 Topic Creator AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Step:1 Topic Creator AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Step:1 Topic Creator AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Step:2 Take the topic and generate the content",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Step:2 Take the topic and generate the content",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step:2 Take the topic and generate the content": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Step:1 Topic Creator AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Step:2 Take the topic and generate the content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate an image": {
+      "main": [
+        []
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Upload a text post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "0b65afc3-e280-4ccc-bbf1-99865117cf08",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "565a4da32d368c81184c7fae4803ff64f662884579a6626c8fe8d9dfb79a1179"
+  },
+  "id": "7KiURNZbG8nf2UTz",
+  "tags": [
+    {
+      "updatedAt": "2026-04-08T07:20:15.830Z",
+      "createdAt": "2026-04-08T07:20:15.830Z",
+      "id": "hI3xeFQ54yJuTPIe",
+      "name": "QA"
+    }
+  ]
+}
